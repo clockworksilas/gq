@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GetaQuest Studios</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Russo+One&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #07171d;
+      --panel: #101a2e;
+      --gold: #b78a59;
+      --cyan: #47d8dd;
+      --purple: #8f00ff;
+      --blue: #4b9cff;
+      --yellow: #d9b21b;
+      --white: #f4f3ff;
+      --legal-green: #064a2a;
+      --legal-gray: #5c5c5c;
+      --shadow: rgba(0, 0, 0, .72);
+    }
+
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--white);
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 54px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: clamp(10px, 1.7vw, 28px);
+      padding: 10px 14px;
+      background: rgba(6, 16, 22, .94);
+      border-bottom: 3px solid rgba(215, 214, 255, .75);
+      text-transform: uppercase;
+      font-size: clamp(7px, .65vw, 11px);
+      color: #8b8f96;
+    }
+
+    .navbar a { opacity: .88; transition: color .2s, transform .2s, opacity .2s; white-space: nowrap; }
+    .navbar a:hover, .navbar a.active { color: var(--gold); opacity: 1; transform: translateY(-1px); }
+
+    .section {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 94px 24px 62px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      isolation: isolate;
+      border-bottom: 1px solid rgba(71, 216, 221, .34);
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(90deg, rgba(3, 11, 14, .95), rgba(3, 11, 14, .25), rgba(3, 11, 14, .95));
+    }
+
+    .section::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 180px;
+      z-index: -1;
+      background: radial-gradient(ellipse at top, rgba(8, 23, 29, .08) 0%, rgba(8, 23, 29, .72) 56%, var(--bg) 100%);
+      pointer-events: none;
+    }
+
+    .hero {
+      min-height: 96vh;
+      background:
+        radial-gradient(circle at 24% 0%, rgba(0,255,159,.34), transparent 26%),
+        radial-gradient(circle at 64% 7%, rgba(127,0,255,.66), transparent 36%),
+        radial-gradient(circle at 85% 8%, rgba(195,105,255,.42), transparent 34%),
+        #000;
+    }
+
+    .poly {
+      position: absolute; inset: 0; z-index: -3;
+      background:
+        linear-gradient(128deg, transparent 0 24%, rgba(255,255,255,.16) 24.2% 24.8%, transparent 25% 100%),
+        linear-gradient(28deg, transparent 0 42%, rgba(255,255,255,.16) 42.2% 42.8%, transparent 43% 100%),
+        linear-gradient(74deg, transparent 0 58%, rgba(255,255,255,.14) 58.2% 58.8%, transparent 59% 100%);
+      opacity: .8;
+      filter: blur(.2px);
+    }
+
+    .content {
+      width: min(920px, 92vw);
+      text-align: center;
+      margin: 0 auto;
+      text-shadow: 0 7px 0 rgba(0,0,0,.52), 0 0 18px rgba(0,0,0,.8);
+    }
+
+    .logo {
+      width: min(350px, 70vw);
+      display: block;
+      margin: 0 auto 18px;
+      filter: drop-shadow(0 0 18px rgba(170, 0, 255, .7));
+    }
+
+    h1, h2 { margin: 0; line-height: 1.12; letter-spacing: 2px; text-transform: uppercase; }
+
+    h1 {
+      font-size: clamp(34px, 6.4vw, 86px);
+      color: var(--white);
+      -webkit-text-stroke: 2px rgba(255,255,255,.1);
+      text-shadow: 5px 5px 0 #091019, -2px -2px 0 rgba(229,0,255,.48), 0 0 26px rgba(95,148,255,.35);
+    }
+
+    .home-title { font-size: clamp(30px, 5.2vw, 74px); }
+
+    .subtitle {
+      margin: 24px 0 34px;
+      font-family: "Russo One", sans-serif;
+      font-style: italic;
+      font-size: clamp(18px, 2.2vw, 34px);
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    .buttons { display: grid; gap: 18px; width: min(500px, 90vw); margin: 0 auto; }
+
+    .button, .download {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 58px;
+      padding: 16px 28px;
+      border-radius: 999px;
+      border: 3px solid rgba(0,0,0,.34);
+      box-shadow: inset 0 -5px 0 rgba(0,0,0,.2), 0 7px 0 rgba(0,0,0,.28);
+      text-transform: uppercase;
+      font-size: clamp(12px, 1.45vw, 24px);
+      transition: transform .18s, filter .18s;
+    }
+
+    .button:hover, .download:hover { transform: translateY(-4px) scale(1.02); filter: brightness(1.12); }
+
+    .purple { background: #7c009f; }
+    .gray { background: #5b5b5b; }
+    .blue { background: #3e8bd3; }
+    .yellow { background: #d0ad17; }
+    .world { background: #18a6a9; }
+
+    .download {
+      margin-top: 32px;
+      width: min(680px, 90vw);
+      min-height: 52px;
+      background: #101b35;
+      color: #fff;
+      font-size: clamp(10px, 1.05vw, 17px);
+    }
+
+    .game-title { font-size: clamp(42px, 7vw, 92px); }
+    .game-title.small { font-size: clamp(30px, 5vw, 72px); }
+
+    .tagline {
+      margin-top: 22px;
+      font-family: "Russo One", sans-serif;
+      font-style: italic;
+      font-size: clamp(20px, 2.5vw, 42px);
+      letter-spacing: 2px;
+    }
+
+    .creator {
+      display: block;
+      margin-bottom: 16px;
+      color: var(--gold);
+      font-size: clamp(9px, 1vw, 15px);
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      line-height: 1.7;
+    }
+
+    #chimp { background-image: url("https://i.ibb.co/1YDkVzZQ/glwoing-fallen-over-tower.png"); }
+    #jmans { background-image: url("https://i.ibb.co/0RrJj627/banner-dc.png"); }
+    #getaway { background-image: url("https://i.ibb.co/B5GKH3Wm/Geta-Way-running-applab.png"); }
+    #monkathon { background-image: url("https://i.ibb.co/391M3rx2/ss1.png"); }
+    #getaworld { background-image: url("https://i.ibb.co/609CcWFc/munke-fight.png"); }
+
+    #getaway .game-title, #chimp .game-title { color: var(--blue); }
+    #jmans .game-title { color: #ff1818; }
+    #monkathon .game-title { color: var(--yellow); }
+    #getaworld .game-title { color: var(--cyan); }
+    #jmans .game-title .first { color: var(--blue); }
+
+    #getaway::before { background: linear-gradient(90deg, rgba(6, 10, 30, .84), rgba(6, 10, 30, .16), rgba(6, 10, 30, .84)); }
+    #jmans::before { background: linear-gradient(90deg, rgba(3, 12, 17, .96), rgba(5, 70, 100, .25), rgba(3, 12, 17, .96)); }
+
+    .legal-section {
+      min-height: 100vh;
+      padding: 105px 20px 70px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: #07171d;
+      border-bottom: 1px solid rgba(71, 216, 221, .34);
+    }
+
+    .legal-board {
+      width: min(1060px, 92vw);
+      background: var(--legal-green);
+      border: 14px solid var(--legal-gray);
+      box-shadow: 0 12px 0 rgba(0,0,0,.28), 0 20px 28px rgba(0,0,0,.35);
+      padding: clamp(18px, 3vw, 48px);
+      color: #fff;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .legal-board h1 {
+      font-size: clamp(34px, 6vw, 86px);
+      line-height: 1.35;
+      margin-bottom: 42px;
+      color: #fff;
+      text-shadow: none;
+      -webkit-text-stroke: 0;
+    }
+
+    .legal-board h2 {
+      color: var(--gold);
+      font-size: clamp(22px, 3.5vw, 48px);
+      margin: 35px 0 20px;
+      text-align: left;
+    }
+
+    .legal-board p, .legal-board li {
+      color: #b7bbb7;
+      font-size: clamp(10px, 1.2vw, 17px);
+      line-height: 1.65;
+      text-align: left;
+    }
+
+    .legal-board .rules {
+      display: inline-block;
+      list-style: none;
+      padding: 0;
+      margin: 0 auto 34px;
+    }
+
+    .legal-board .rules li {
+      color: #fff;
+      text-align: center;
+      font-size: clamp(14px, 2.1vw, 28px);
+      line-height: 1.55;
+    }
+
+    .legal-board .rules li::before { content: "-"; }
+
+    .legal-board .big-note {
+      color: #fff;
+      text-align: center;
+      font-size: clamp(14px, 2vw, 28px);
+      line-height: 1.55;
+      margin: 40px 0 36px;
+    }
+
+    .privacy-board { max-height: none; }
+    .privacy-board h1 { margin-bottom: 28px; }
+    .privacy-text p { margin: 0 0 18px; }
+    .privacy-text p:first-child { color: #fff; text-align: center; font-size: clamp(18px, 3vw, 42px); line-height: 1.45; }
+
+    .footer {
+      min-height: 290px;
+      display: grid;
+      place-items: center;
+      padding: 48px 20px;
+      background: #201815;
+      text-align: center;
+      color: var(--gold);
+      letter-spacing: 10px;
+      line-height: 1.65;
+      font-size: clamp(17px, 2vw, 30px);
+    }
+
+    .footer-links { margin-top: 24px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 10px; letter-spacing: 2px; color: #fff; }
+
+    .contact {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 1001;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--cyan);
+      color: #043238;
+      font-size: 9px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.35);
+    }
+
+    @media (max-width: 760px) {
+      .navbar { gap: 10px 13px; padding: 10px; }
+      .section { min-height: 820px; padding-top: 130px; }
+      .home-title { font-size: 33px; }
+      .button { min-height: 52px; }
+      .creator { letter-spacing: 3px; }
+      .legal-board { border-width: 8px; }
+      .legal-board h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" aria-label="Main navigation">
+    <a class="active" href="#home">Home</a>
+    <a href="#chimp">Chimp Chase PVP</a>
+    <a href="#getaway">GetaWay</a>
+    <a href="#jmans">Jmans Nightmare</a>
+    <a href="#monkathon">Monkathon</a>
+    <a href="#getaworld">GetaWorld</a>
+    <a href="#conduct">Code</a>
+    <a href="#privacy">Privacy</a>
+  </nav>
+
+  <a class="contact" href="mailto:support@getagames.co.uk">Contact</a>
+
+  <header id="home" class="section hero">
+    <div class="poly"></div>
+    <div class="content">
+      <img class="logo" src="https://i.ibb.co/Y4FzM0h0/geta-quest.png" alt="GetaQuest Studios logo">
+      <h1 class="home-title">GetaQuest Studios</h1>
+      <p class="subtitle">Quest 2 + 3 Games Development</p>
+
+      <div class="buttons">
+        <a class="button purple" href="#getaway">GetaWay ☻</a>
+        <a class="button gray" href="#chimp">Chimp Chase PVP ☻</a>
+        <a class="button blue" href="#jmans">Jman's Nightmare ☻</a>
+        <a class="button yellow" href="#monkathon">Monkathon ☻</a>
+        <a class="button world" href="#getaworld">GetaWorld ☻</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="chimp" class="section">
+    <div class="content">
+      <h2 class="game-title">Chimp Chase</h2>
+      <p class="tagline">Be you, be monke</p>
+      <a class="download" href="https://www.meta.com/en-gb/experiences/7534476186591676?ranking_trace=0_7534476186591676_QUESTSEARCH_0jnKIBXlZGatR1bsr_eyJwbGF0Zm9ybSI6ImFuZHJvaWQtNmRvZiIsInF1ZXJ5X3N0cmluZyI6ImNoaW1wIGNoYXNlIiwibG9jYWxlIjoiZW5fR0IiLCJudW1fZmV0Y2giOjEwMSwic2VhcmNoX3JvdXRlIjoid2ViIiwidGFnX2lkcyI6W119_eyJzZWN0aW9uX2tleSI6IlNFQVJDSCJ9" target="_blank" rel="noopener noreferrer">Download now for VR ☻</a>
+    </div>
+  </section>
+
+  <section id="getaway" class="section">
+    <div class="content">
+      <span class="creator">From the creators<br>of...</span>
+      <h2 class="game-title">GetaWay</h2>
+      <p class="tagline">Made for you, monke</p>
+      <a class="download" href="https://www.meta.com/en-gb/experiences/getaway/6164653416922457/" target="_blank" rel="noopener noreferrer">Download now for VR ☻</a>
+    </div>
+  </section>
+
+  <section id="jmans" class="section">
+    <div class="content">
+      <h2 class="game-title small"><span class="first">Jmans</span> Nightmare</h2>
+      <p class="tagline">dont let jman catch you.</p>
+      <a class="download" href="https://www.meta.com/en-gb/experiences/jmans-nightmare/7201062236642997/" target="_blank" rel="noopener noreferrer">Download now for VR ☻</a>
+    </div>
+  </section>
+
+  <section id="monkathon" class="section">
+    <div class="content">
+      <h2 class="game-title">Monkathon!</h2>
+      <p class="tagline">Miners VS Monarchs...</p>
+      <a class="download" href="https://www.meta.com/en-gb/experiences/jmans-nightmare/7201062236642997/" target="_blank" rel="noopener noreferrer">Download now for VR ☻</a>
+    </div>
+  </section>
+
+  <section id="getaworld" class="section">
+    <div class="content">
+      <span class="creator">New page</span>
+      <h2 class="game-title">GetaWorld</h2>
+      <p class="tagline">A new world for monkes</p>
+      <a class="download" href="#conduct">Coming soon ☻</a>
+    </div>
+  </section>
+
+  <section id="conduct" class="legal-section">
+    <article class="legal-board">
+      
+<h1>GETAQUEST STUDIOS<br>CODE OF CONDUCT</h1>
+<ul class="rules">
+  <li>No cheating/hacking or modifying our games in any way</li>
+  <li>Don’t be toxic</li>
+  <li>Don’t doxx or harass other players</li>
+  <li>Don’t ruin another player's experience</li>
+  <li>Don’t abuse exploits or glitches</li>
+  <li>No hate speech</li>
+</ul>
+<p class="big-note">If you see someone breaking one of these rules,<br>make sure to report them!</p>
+<h2>Community Terms</h2>
+<p>When playing/using our games, including Chimp Chase PvP, GetaWay, Jman’s Nightmare, Monkathon, and GetaWorld online services, you agree to not doxx, hurt, harass, or otherwise harm other members of the community.</p>
+<p>We do not permit the use of malicious links or apps inside the Discord server or our games. You are not to impersonate staff in any shape or form online or inside any of our games.</p>
+<h2>Game Terms</h2>
+<p>We don't permit re-distributing the game, monetizing the game, decompiling the game, editing the game files, or modifying the game files in any shape, way, or form.</p>
+<p>We don't permit the use, abuse, or discussion of bugs while using any of our games. If you find a bug, please report it to the developers.</p>
+<p>Modding inside our games is extremely prohibited. Modding includes, but is not limited to: making mod menus, giving yourself “powers,” making the game unfair for others, and modifying game files.</p>
+<h2>Questions / Concerns</h2>
+<p>If you have any questions or concerns about anything stated above, please contact<br><a href="mailto:support@getagames.co.uk">support@getagames.co.uk</a></p>
+
+    </article>
+  </section>
+
+  <section id="privacy" class="legal-section">
+    <article class="legal-board privacy-board">
+      <h1>GETAQUEST STUDIOS<br>PRIVACY POLICY</h1>
+      <div class="privacy-text"><p>GetaQuest Studios<br>privacy policy<br>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects you.</p><p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. </p><p>Interpretation and Definitions<br>Interpretation<br>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p><p>Definitions<br>For the purposes of this Privacy Policy:</p><p>Account means a unique account created for You to access our Service or parts of our Service.</p><p>Affiliate means an entity that controls, is controlled by or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p><p>Application refers to Chimp Chase PvP, GetaWay, Jman&#x27;s Nightmare, Monkathon, and GetaWorld, the software programs provided by the Company.</p><p>Company (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to GetaQuest Studios.</p><p>Country refers to: North Carolina, United States</p><p>Device means any device that can access the Service such as a computer, a cellphone or a digital tablet.</p><p>Personal Data is any information that relates to an identified or identifiable individual.</p><p>Service refers to the Application and website.</p><p>Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</p><p>Usage Data refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</p><p>You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p><p>Collecting and Using Your Personal Data<br>Data we collect consist of the following;<br>Personal Data<br>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p><p>First name and last name</p><p>Address, State, Province, ZIP/Postal code, City</p><p>Usage Data</p><p>Usage Data<br>Usage Data is collected automatically when using the Service.</p><p>Usage Data may include information such as Your Device&#x27;s Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p><p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p><p>We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.</p><p>Use of Your Personal Data<br>The Company may use Personal Data for the following purposes:</p><p>To provide and maintain our Service, including to monitor the usage of our Service.</p><p>To manage Your Account: to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</p><p>For the performance of a contract: the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</p><p>To contact You: To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application&#x27;s push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</p><p>To provide You with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.</p><p>To manage Your requests: To attend and manage Your requests to Us.</p><p>For business transfers: We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.</p><p>For other purposes: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.</p><p>   We may share Your personal information in the following situations:</p><p>With Service Providers: We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.</p><p>For business transfers: We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</p><p>With Affiliates: We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</p><p>With business partners: We may share Your information with Our business partners to offer You certain products, services or promotions.</p><p>With other users: when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside.</p><p>With Your consent: We may disclose Your personal information for any other purpose with Your consent.</p><p>Retention of Your Personal Data<br>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p><p>The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods.</p><p>Transfer of Your Personal Data<br>Your information, including Personal Data, is processed at the Company&#x27;s operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.</p><p>Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer.</p><p>The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.</p><p>Delete Your Personal Data<br>You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.</p><p>Our Service may give You the ability to delete certain information about You from within the Service.</p><p>You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any personal information that You have provided to Us.</p><p>Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.</p><p>Disclosure of Your Personal Data<br>Business Transactions<br>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.</p><p>Law enforcement<br>Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p><p>Other legal requirements<br>The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:</p><p>Comply with a legal obligation</p><p>Protect and defend the rights or property of the Company</p><p>Prevent or investigate possible wrongdoing in connection with the Service</p><p>Protect the personal safety of Users of the Service or the public</p><p>Protect against legal liability</p><p>Security of Your Personal Data<br>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</p><p>Children&#x27;s Privacy<br>Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.</p><p>If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent&#x27;s consent before We collect and use that information.</p><p>Links to Other Websites<br>Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party&#x27;s site. We strongly advise You to review the Privacy Policy of every site You visit.</p><p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p><p>Changes to this Privacy Policy<br>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p><p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p><p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p><p>Contact Us<br>If you have any questions about this Privacy Policy, You can contact us:</p><p>By email: support@getagames.co.uk</p></div>
+    </article>
+  </section>
+
+  <footer class="footer">
+    <div>
+      GETAQUEST<br>STUDIOS
+      <div class="footer-links">
+        <a href="#conduct">Code of Conduct</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="mailto:support@getagames.co.uk">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navLinks = document.querySelectorAll('.navbar a');
+    const sections = [...document.querySelectorAll('header.section, section.section, section.legal-section')];
+
+    function updateActiveLink() {
+      const scrollSpot = window.scrollY + window.innerHeight * 0.35;
+      let current = sections[0].id;
+      for (const section of sections) {
+        if (section.offsetTop <= scrollSpot) current = section.id;
+      }
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink();
+  </script>
+</body>
+</html>
